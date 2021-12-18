@@ -16,7 +16,7 @@ resource "aws_instance" "user_data_example" {
 		sudo yum install -y httpd.x86_64
 		sudo service httpd start
 		sudo service httpd enable
-		echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
+		echo "<h1>Deployed via Terraform embded</h1>" | sudo tee /var/www/html/index.html
 	EOF
 
   tags = {
