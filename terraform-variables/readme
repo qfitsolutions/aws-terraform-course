@@ -1,0 +1,11 @@
+terraform init
+terraform plan -out dev.plan -var-file=dev.tfvars
+terraform apply dev.plan
+
+terraform init
+terraform plan -out test.plan -var-file=test.tfvars
+terraform apply test.plan
+
+terraform init
+terraform plan -out prod.plan -var-file=prod.tfvars
+terraform apply prod.plan
