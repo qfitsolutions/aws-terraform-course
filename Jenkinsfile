@@ -21,7 +21,9 @@ pipeline {
         stage('apply') {
             steps {
                 dir('example') {
-                  sh 'terraform apply terraform.plan'
+                  withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
+                    sh 'terraform apply terraform.plan'
+                  }
                 }
             }
         }
