@@ -3,7 +3,7 @@ pipeline {
     parameters {
         choice(
             choices: ['apply' , 'destroy'],
-            description: '',
+            description: 'select',
             name: 'REQUESTED_ACTION')
     }
     stages {
