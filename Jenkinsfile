@@ -12,7 +12,9 @@ pipeline {
         stage('plan') {
             steps {
                 dir('example') {
-                  sh 'terraform plan -out terraform.plan'
+                  withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
+                    sh 'terraform plan -out terraform.plan'
+                  }
                 }
             }
         }
