@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                sh 'terraform init'
+                dir('example') {
+                  sh 'terraform init'
+                }
             }
         }
     }
