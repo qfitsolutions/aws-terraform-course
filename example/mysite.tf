@@ -4,9 +4,7 @@ module "ec2"{
 }
 module "ecs"{
     source = "./modules/ecs"
-    instancetype = "t2.small"
 }
 module "eks"{
     source = "./modules/eks"
-    instancetype = "t2.small"
 }
