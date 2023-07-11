@@ -42,7 +42,7 @@ pipeline {
             steps {
                 dir('example') {
                   withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
-                    sh 'terraform apply -destroy'
+                    sh 'terraform apply -destroy -auto-approve'
                   }
                 }
             }
