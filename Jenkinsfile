@@ -2,7 +2,7 @@ pipeline {
     agent any
     parameters {
         choice(
-            choices: ['apply' , 'destroy','import'],
+            choices: ['apply' , 'destroy','import','plan'],
             description: 'select',
             name: 'REQUESTED_ACTION')
     }
@@ -27,6 +27,9 @@ pipeline {
             }
         }
         stage('plan') {
+            when {
+                expression { params.REQUESTED_ACTION == 'plan' }
+            }
             steps {
                 dir('importdemo') {
                   withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
