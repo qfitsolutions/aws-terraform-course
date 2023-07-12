@@ -1,6 +1,5 @@
-module "ec2"{
-    source = "./modules/ec2"
-    instancetype = "t2.small"
+module "s3"{
+    source = "./modules/s3"
 }
 # module "ecs"{
 #     source = "./modules/ecs"

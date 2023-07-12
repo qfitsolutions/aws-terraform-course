@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('init') {
             steps {
-                dir('example') {
+                dir('importdemo') {
                   sh 'terraform init'
                 }
             }
@@ -19,7 +19,7 @@ pipeline {
                 expression { params.REQUESTED_ACTION == 'import' }
             }
             steps {
-                dir('example') {
+                dir('importdemo') {
                   withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
                     sh 'terraform import aws_instance.app_server i-02d70938318384a50'
                   }
@@ -31,7 +31,7 @@ pipeline {
                 expression { params.REQUESTED_ACTION == 'plan' }
             }
             steps {
-                dir('example') {
+                dir('importdemo') {
                   withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
                     sh 'terraform plan -out terraform.plan'
                   }
@@ -44,7 +44,7 @@ pipeline {
                 expression { params.REQUESTED_ACTION == 'apply' }
             }
             steps {
-                dir('example') {
+                dir('importdemo') {
                   withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
                     sh 'terraform apply terraform.plan'
                   }
@@ -56,7 +56,7 @@ pipeline {
                 expression { params.REQUESTED_ACTION == 'destroy' }
             }
             steps {
-                dir('example') {
+                dir('importdemo') {
                   withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
                     sh 'terraform apply -destroy -auto-approve'
                   }
