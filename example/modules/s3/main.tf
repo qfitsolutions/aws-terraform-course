@@ -9,6 +9,6 @@ variable "bucket_list" {
 
 resource "aws_s3_bucket" "demo_bucket" {
   for_each = toset(var.bucket_list)
-  bucket = var.name
+  bucket = var.key
 }
 
