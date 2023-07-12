@@ -2,33 +2,46 @@ pipeline {
     agent any
     parameters {
         choice(
-            choices: ['apply' , 'destroy'],
+            choices: ['apply' , 'destroy','import'],
             description: 'select',
             name: 'REQUESTED_ACTION')
     }
     stages {
         stage('init') {
             steps {
-                dir('example') {
+                dir('importdemo') {
                   sh 'terraform init'
+                }
+            }
+        }
+        stage('import') {
+            when {
+                expression { params.REQUESTED_ACTION == 'import' }
+            }
+            steps {
+                dir('importdemo') {
+                  withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
+                    sh 'terraform import aws_instance.app_server i-02d70938318384a50'
+                  }
                 }
             }
         }
         stage('plan') {
             steps {
-                dir('example') {
+                dir('importdemo') {
                   withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
                     sh 'terraform plan -out terraform.plan'
                   }
                 }
             }
         }
+        
         stage('apply') {
             when {
                 expression { params.REQUESTED_ACTION == 'apply' }
             }
             steps {
-                dir('example') {
+                dir('importdemo') {
                   withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
                     sh 'terraform apply terraform.plan'
                   }
@@ -40,7 +53,7 @@ pipeline {
                 expression { params.REQUESTED_ACTION == 'destroy' }
             }
             steps {
-                dir('example') {
+                dir('importdemo') {
                   withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: "awscred", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]){
                     sh 'terraform apply -destroy -auto-approve'
                   }
